@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:hungryhub/Model/provider/restaurant_provider.dart';
 import 'package:hungryhub/View/homepage.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -9,33 +10,42 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+    final restaurantProvider =
+        Provider.of<RestaurantProvider>(context, listen: false);
 
-    Future.delayed(
-        const Duration(seconds: 3),
-        () => Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (_) => const Homepage())));
-  }
+    // Fetch data when the splash screen is loaded
+    restaurantProvider.fetchRestaurants();
 
-  @override
-  void dispose() {
-    super.dispose();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: SystemUiOverlay.values);
+    // Delay for 2 seconds and then navigate to the home screen
+    Future.delayed(Duration(seconds: 3), () {
+      Navigator.of(context)
+          .pushReplacement(MaterialPageRoute(builder: (context) => Homepage()));
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final restaurantProvider =
+        Provider.of<RestaurantProvider>(context, listen: false);
+
+    // Fetch data when the splash screen is loaded
+    restaurantProvider.fetchRestaurants();
     return Container(
       decoration: const BoxDecoration(
-          gradient: RadialGradient(colors: [Colors.green, Colors.yellow])),
-      // child: Image.asset('assets/images/logo1.jpg'),
-      // child: Center(child: CircularProgressIndicator()),
+          gradient: LinearGradient(
+              colors: [Colors.blue, Colors.purple],
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft)),
+      child: Center(
+        child: Image.asset(
+          'assets/images/logo1.jpg',
+          width: 200,
+        ),
+      ),
     );
   }
 }
