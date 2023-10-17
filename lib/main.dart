@@ -3,6 +3,7 @@ import 'package:hungryhub/Model/provider/restaurant_provider.dart';
 import 'package:hungryhub/View/splash_screen.dart';
 import 'package:provider/provider.dart';
 
+
 void main() {
   runApp(MyApp());
 }
@@ -17,10 +18,16 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'HungryHub',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primarySwatch: Colors.purple,
         ),
         debugShowCheckedModeBanner: false,
         home: const SplashScreen(),
+        initialRoute: '/', // Atur halaman awal
+        routes: {
+          // '/': (context) => SplashScreen(), // Atur rute untuk splash screen
+          // '/home': (context) => Homepage(), // Atur rute untuk home screen
+          // '/detail': (context) => DetailRestaurant(), // Atur rute untuk detail screen
+        },
       ),
     );
   }

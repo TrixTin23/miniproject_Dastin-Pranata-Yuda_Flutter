@@ -7,6 +7,7 @@ class RestaurantRepository {
   Future<List<Restaurant>> fetchRestaurants() async {
     try {
       final response = await _dio.get("https://restaurant-api.dicoding.dev/list");
+      // final response = await _dio.get("https://652ce537d0d1df5273efd2ec.mockapi.io/list");
 
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data['restaurants'];
