@@ -1,12 +1,33 @@
-class Restaurant {
-  final String id;
-  final String name;
-  final String description;
-  final String pictureId;
-  final String city;
-  final double rating;
+// models/restaurant_list.dart
+class RestaurantList {
+  bool error;
+  String message;
+  int count;
+  List<Restaurant> restaurants;
 
-  // tambahkan atribut lain yang diperlukan
+  RestaurantList({
+    required this.error,
+    required this.message,
+    required this.count,
+    required this.restaurants,
+  });
+
+  factory RestaurantList.fromJson(Map<String, dynamic> json) => RestaurantList(
+        error: json["error"],
+        message: json["message"],
+        count: json["count"],
+        restaurants: List<Restaurant>.from(
+            json["restaurants"].map((x) => Restaurant.fromJson(x))),
+      );
+}
+
+class Restaurant {
+  String id;
+  String name;
+  String description;
+  String pictureId;
+  String city;
+  double rating;
 
   Restaurant({
     required this.id,
@@ -15,17 +36,14 @@ class Restaurant {
     required this.pictureId,
     required this.city,
     required this.rating,
-    // tambahkan atribut lain yang diperlukan
   });
 
-  factory Restaurant.fromJson(Map<String, dynamic> json) {
-    return Restaurant(
-      id: json['id'],
-      name: json['name'],
-      description: json['description'],
-      pictureId: json['pictureId'],
-      city: json['city'],
-      rating: json['rating'].toDouble(),
-    );
-  }
+  factory Restaurant.fromJson(Map<String, dynamic> json) => Restaurant(
+        id: json["id"],
+        name: json["name"],
+        description: json["description"],
+        pictureId: json["pictureId"],
+        city: json["city"],
+        rating: json["rating"].toDouble(),
+      );
 }
