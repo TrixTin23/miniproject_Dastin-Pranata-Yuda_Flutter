@@ -17,4 +17,17 @@ class RestaurantService {
     final response = await Dio().get(_baseUrl + "/detail/$id");
     return RestaurantDetail.fromJson(response.data);
   }
+
+  Future<RestaurantDetail> addReview(String id, String name, String review) async {
+    final response = await Dio().post(
+      _baseUrl + "/review",
+      data: {
+        "id": id,
+        "name": name,
+        "review": review,
+        // "date": date
+      },
+    );
+    return RestaurantDetail.fromJson(response.data);
+  }
 }

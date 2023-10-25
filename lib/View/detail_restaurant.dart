@@ -3,6 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hungryhub/Model/restaurant_detail_model.dart';
 
 import '../Service/restaurant_manager.dart';
+import 'review_form.dart';
 
 class RestaurantDetailPage extends StatefulWidget {
   final String id;
@@ -24,7 +25,22 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Restaurant Detail")),
+      appBar: AppBar(
+        title: const Text("Restaurant Detail"),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add_comment),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ReviewView(id: widget.id),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
       body: FutureBuilder<RestaurantDetail>(
         future: future,
         builder:

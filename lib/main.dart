@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hungryhub/Service/restaurant_provider.dart';
+import 'package:hungryhub/Service/review_provider.dart';
 import 'package:hungryhub/View/splash_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -12,8 +13,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => RestaurantListViewModel(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => RestaurantListViewModel()),
+        ChangeNotifierProvider(create: (context) => ReviewProvider())
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'HungryHub',
