@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../Service/restaurant_provider.dart';
-import 'detail_restaurant.dart';
+import 'restaurant_detail.dart';
 
 class RestaurantListPage extends StatefulWidget {
   const RestaurantListPage({super.key});
@@ -29,7 +29,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
       body: Consumer<RestaurantListViewModel>(
         builder: (context, model, child) {
           if (model.isLoading) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (model.message.isNotEmpty) {
             return Center(child: Text(model.message));
           } else {
@@ -43,21 +43,21 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                   child: Column(
                     children: <Widget>[
                       Image.network(
-                        "https://restaurant-api.dicoding.dev/images/small/${restaurant.pictureId}",
+                        "https://restaurant-api.dicoding.dev/images/medium/${restaurant.pictureId}",
                         fit: BoxFit.cover,
                         height: 150, // Mengatur tinggi gambar
                       ),
                       ListTile(
                         title: Text(
                           restaurant.name,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         subtitle: Text(
                           restaurant.city,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                           ),
                         ),
@@ -66,7 +66,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
                           children: <Widget>[
                             Text(
                               restaurant.rating.toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                               ),
                             ),
