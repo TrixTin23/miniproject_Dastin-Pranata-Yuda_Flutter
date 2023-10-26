@@ -29,7 +29,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
         title: const Text("Restaurant Detail"),
         actions: [
           IconButton(
-            icon: Icon(Icons.add_comment),
+            icon: const Icon(Icons.add_comment),
             onPressed: () {
               Navigator.push(
                 context,
@@ -52,7 +52,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Image.network(
-                      "https://restaurant-api.dicoding.dev/images/small/${restaurant.pictureId}"),
+                      "https://restaurant-api.dicoding.dev/images/medium/${restaurant.pictureId}"),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -86,7 +86,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                         const SizedBox(height: 8),
                         Text(
                           restaurant.address,
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.grey,
                           ),
                         ),
