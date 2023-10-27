@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hungryhub/View/widget/drawer_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -26,6 +27,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
       appBar: AppBar(
         title: const Text('Hungry Hub'),
       ),
+      drawer: const AppDrawer(),
       body: Consumer<RestaurantListViewModel>(
         builder: (context, model, child) {
           if (model.isLoading) {
