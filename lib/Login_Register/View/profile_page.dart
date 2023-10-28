@@ -17,6 +17,18 @@ class ProfileScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            CircleAvatar(
+              radius: 50,
+              child: ClipOval(
+                child: Image.network(
+                  'https://picsum.photos/200',
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
             Text(
               'Selamat datang, ${authViewModel.currentUser?.username ?? 'Pengguna'}!',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -25,16 +37,19 @@ class ProfileScreen extends StatelessWidget {
             if (authViewModel.isAuthenticated)
               Column(
                 children: <Widget>[
-                  Text('Username: ${authViewModel.currentUser?.username ?? ''}'),
-                  Text('Password: ${authViewModel.currentUser?.password ?? ''}'),
+                  Text(
+                      'Username: ${authViewModel.currentUser?.username ?? ''}'),
+                  Text(
+                      'Password: ${authViewModel.currentUser?.password ?? ''}'),
                 ],
               ),
+            SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => EditProfileScreen()),
-                );                
+                );
                 // Tambahkan logika untuk mengedit profil pengguna
                 // Anda dapat menggunakan showDialog atau Navigator.push untuk mengedit data pengguna
               },

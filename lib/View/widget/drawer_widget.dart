@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hungryhub/Login_Register/Service/auth_view_model.dart';
 import 'package:hungryhub/Login_Register/View/login_page.dart';
 import 'package:hungryhub/Login_Register/View/profile_page.dart';
+import 'package:hungryhub/chatbot/view/chatbot.dart';
 import 'package:provider/provider.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -34,6 +35,15 @@ class AppDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => ProfileScreen()));
+              },
+            ),
+          if (authViewModel.isAuthenticated)
+            ListTile(
+              leading: Icon(Icons.help_outline),
+              title: const Text('Help'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Chatbot()));
               },
             ),
           if (authViewModel.isAuthenticated)
