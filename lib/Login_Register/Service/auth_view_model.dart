@@ -56,6 +56,34 @@ class AuthViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> editProfile(String username, String newPassword) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    if (isAuthenticated && currentUser != null) {
+      // Cari user yang sedang login dalam daftar registeredUsers
+      final userIndex = registeredUsers.indexWhere((user) => user.username == currentUser!.username);
+
+      if (userIndex != -1) {
+        // Update password user yang sedang login
+        registeredUsers[userIndex] = ModelUser(username: username, password: newPassword);
+
+        // Simpan perubahan ke SharedPreferences
+        await prefs.setStringList(
+          'registeredUsers',
+          registeredUsers
+              .map((user) => '${user.username}:${user.password}')
+              .toList(),
+        );
+
+        // Update currentUser dengan data baru
+        currentUser = ModelUser(username: username, password: newPassword);
+      }
+    }
+
+    notifyListeners();
+  }
+
+
   Future<void> checkAuthentication() async {
     final prefs = await SharedPreferences.getInstance();
     final isUserAuthenticated = prefs.getBool('isAuthenticated') ?? false;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hungryhub/Login_Register/Service/auth_view_model.dart';
 import 'package:hungryhub/Login_Register/View/login_page.dart';
+import 'package:hungryhub/Login_Register/View/profile_page.dart';
 import 'package:provider/provider.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -15,17 +16,26 @@ class AppDrawer extends StatelessWidget {
         children: [
           const DrawerHeader(
             decoration: BoxDecoration(
-              color: Color(0xff272829),
+              color: Color(0xff606c5d),
             ),
             child: Text(
               'HungryHub',
               style: TextStyle(
-                color: Color(0xffd2e603),
+                color: Color(0xfff1c376),
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
               ),
             ),
           ),
+          if (authViewModel.isAuthenticated)
+            ListTile(
+              leading: Icon(Icons.person_2_outlined),
+              title: const Text('Profile'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ProfileScreen()));
+              },
+            ),
           if (authViewModel.isAuthenticated)
             ListTile(
               leading: const Icon(Icons.logout_outlined),
@@ -37,14 +47,6 @@ class AppDrawer extends StatelessWidget {
                     context,
                     MaterialPageRoute(
                         builder: (context) => LoginScreen())); // Tutup drawer
-              },
-            ),
-          if (!authViewModel.isAuthenticated)
-            ListTile(
-              leading: Icon(Icons.logout_outlined),
-              title: const Text('Login'),
-              onTap: () {
-                Navigator.pushNamed(context, '/login');
               },
             ),
           if (!authViewModel.isAuthenticated)

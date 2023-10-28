@@ -18,7 +18,6 @@ class _ReviewViewState extends State<ReviewView> {
   late Future<RestaurantDetail> future;
 
   final TextEditingController _nameController = TextEditingController();
-
   final TextEditingController _reviewController = TextEditingController();
 
   @override
