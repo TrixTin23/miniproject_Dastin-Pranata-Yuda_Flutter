@@ -83,6 +83,32 @@ class AuthViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> deleteAccount() async {
+  if (isAuthenticated && currentUser != null) {
+    final prefs = await SharedPreferences.getInstance();
+
+    // Hapus pengguna yang sedang login dari daftar registeredUsers
+    registeredUsers.removeWhere((user) => user.username == currentUser!.username);
+
+    // Simpan daftar pengguna terdaftar yang telah diperbarui ke SharedPreferences
+    await prefs.setStringList(
+      'registeredUsers',
+      registeredUsers
+          .map((user) => '${user.username}:${user.password}')
+          .toList(),
+    );
+
+    // Hapus informasi autentikasi
+    await prefs.remove('isAuthenticated');
+    await prefs.remove('lastLoggedInUser');
+
+    // Reset status autentikasi dan currentUser
+    isAuthenticated = false;
+    currentUser = null;
+
+    notifyListeners();
+  }
+}
 
   Future<void> checkAuthentication() async {
     final prefs = await SharedPreferences.getInstance();

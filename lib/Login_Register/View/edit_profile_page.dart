@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hungryhub/Login_Register/View/login_page.dart';
 import 'package:provider/provider.dart';
 
 import '../Service/auth_view_model.dart';
@@ -52,6 +53,44 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   }
                 },
                 child: Text('Save Profile'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text('Hapus Akun'),
+                        content:
+                            Text('Apakah Anda yakin ingin menghapus akun?'),
+                        actions: <Widget>[
+                          TextButton(
+                            child: Text('Batal'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                          TextButton(
+                            child: Text('Hapus'),
+                            onPressed: () {
+                              authViewModel.deleteAccount();
+                              Navigator.of(context).pop();
+                              // Kembali ke halaman login atau halaman awal aplikasi
+                              // Misalnya:
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+                child: Text('Hapus Akun'),
               ),
             ],
           ),
