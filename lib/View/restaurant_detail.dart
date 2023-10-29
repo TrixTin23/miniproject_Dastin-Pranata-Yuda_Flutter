@@ -3,7 +3,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hungryhub/Model/restaurant_detail_model.dart';
 
 import '../Service/restaurant_manager.dart';
-import 'review_form.dart';
+import '../review_form/view/review_form.dart';
 
 class RestaurantDetailPage extends StatefulWidget {
   final String id;

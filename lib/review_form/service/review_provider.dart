@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import '../Model/restaurant_review_model.dart';
+import '../model/restaurant_review_model.dart';
 import 'review_service.dart';
 
 class ReviewProvider extends ChangeNotifier {
