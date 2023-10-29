@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hungryhub/View/widget/drawer_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
+import '../../widget/drawer_widget.dart';
 import '../Service/restaurant_provider.dart';
 import 'restaurant_detail.dart';
 

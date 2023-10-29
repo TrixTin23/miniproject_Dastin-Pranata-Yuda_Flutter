@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-import 'restaurant_manager.dart';
 import '../Model/restaurant_model.dart';
+import 'restaurant_manager.dart';
 
 class RestaurantListViewModel extends ChangeNotifier {
   List<Restaurant> _restaurants = [];

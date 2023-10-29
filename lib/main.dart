@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hungryhub/Service/restaurant_provider.dart';
-import 'package:hungryhub/View/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'Login_Register/Service/auth_view_model.dart';
+import 'restaurant_list/Service/restaurant_provider.dart';
 import 'review_form/service/review_provider.dart';
+import 'widget/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());

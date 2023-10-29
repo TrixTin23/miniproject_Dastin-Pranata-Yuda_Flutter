@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hungryhub/Model/restaurant_detail_model.dart';
+import 'package:hungryhub/restaurant_list/Model/restaurant_detail_model.dart';
 import 'package:provider/provider.dart';
 
-import '../../Service/restaurant_manager.dart';
+import '../../restaurant_list/Service/restaurant_manager.dart';
 import '../service/review_provider.dart';
 
 class ReviewView extends StatefulWidget {

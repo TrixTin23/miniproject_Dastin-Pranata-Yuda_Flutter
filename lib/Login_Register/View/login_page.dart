@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hungryhub/View/restaurant_list.dart';
 import 'package:provider/provider.dart';
 
+import '../../restaurant_list/View/restaurant_list.dart';
 import '../Service/auth_view_model.dart';
 import 'register_page.dart';
 
