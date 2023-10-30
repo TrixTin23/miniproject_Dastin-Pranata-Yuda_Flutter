@@ -8,7 +8,7 @@ class APIService {
     final Map<String, dynamic> requestData = {
       "model": "gpt-3.5-turbo",
       "messages": [
-        {"role": "system", "content": "You are a helpful assistant."},
+        {"role": "system", "content": "Kamu hanya akan memberikan hasil rekomendasi restorant, jika $message tidak meminta rekomendasi maka hasil yang diberikan adalah pertanyaan untuk validasi rekomendasi restorant"},
         {"role": "user", "content": message}
       ]
     };

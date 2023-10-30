@@ -3,8 +3,15 @@ import 'package:provider/provider.dart';
 
 import '../Service/auth_view_model.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -20,106 +27,118 @@ class RegisterScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Center(
-                  // Wrap this Center around the Image
-                  child: Image.asset(
-                    "assets/images/Hungry-hub.png",
-                    height: 300,
-                    width: 350,
-                  ),
-                ),
-                const Text(
-                  'Buat Akun Baru',
-                  style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xff606c5d)), // Warna teks
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  width: 300,
-                  child: TextField(
-                    controller: fullNameController,
-                    decoration: const InputDecoration(
-                      hintText: "Enter Your full name",
-                      labelText: 'Full name',
-                      border: UnderlineInputBorder(),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Center(
+                    // Wrap this Center around the Image
+                    child: Image.asset(
+                      "assets/images/Hungry-hub.png",
+                      height: 300,
+                      width: 350,
                     ),
                   ),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  width: 300,
-                  child: TextField(
-                    controller: phoneNumberController,
-                    decoration: const InputDecoration(
-                      hintText: "Enter Your Phone Number",
-                      labelText: 'Phone Number',
-                      border: UnderlineInputBorder(),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  width: 300,
-                  child: TextField(
-                    controller: emailController,
-                    decoration: const InputDecoration(
-                      hintText: "Enter Your Username",
-                      labelText: 'Email',
-                      border: UnderlineInputBorder(),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  width: 300,
-                  child: TextField(
-                    controller: passwordController,
-                    decoration: const InputDecoration(
-                      hintText: "Enter Your Password",
-                      labelText: 'Password',
-                      border: UnderlineInputBorder(),
-                    ),
-                    obscureText: true,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    String fullName = fullNameController.text;
-                    String phoneNumber = phoneNumberController.text;
-                    String email = emailController.text;
-                    String password = passwordController.text;
-                    authViewModel.register(
-                        fullName, phoneNumber, email, password);
-                    Navigator.of(context).pop(); // Kembali ke layar login
-                  },
-                  style: ElevatedButton.styleFrom(
-                    fixedSize: Size.fromWidth(300),
-                    primary:
-                        const Color(0xfff1c376), // Warna latar belakang tombol
-                    onPrimary: const Color(0xff606c5d), // Warna teks tombol
-                  ),
-                  child: const Text(
-                    'Daftar',
-                  ),
-                ),
-                const SizedBox(height: 10),
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // Kembali ke layar login
-                  },
-                  child: const Text(
-                    'Batal',
+                  const Text(
+                    'Buat Akun Baru',
                     style: TextStyle(
-                        color: Color(0xff606c5d)), // Warna teks tombol
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xff606c5d)), // Warna teks
                   ),
-                ),
-              ],
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: 300,
+                    child: TextFormField(
+                      controller: fullNameController,
+                      decoration: const InputDecoration(
+                        hintText: "Enter Your full name",
+                        labelText: 'Full name',
+                        border: UnderlineInputBorder(),
+                      ),
+                      validator: (value) => 
+                          value!.isEmpty ? 'Please enter your full name' : null,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: 300,
+                    child: TextFormField(
+                      controller: phoneNumberController,
+                      decoration: const InputDecoration(
+                        hintText: "Enter Your Phone Number",
+                        labelText: 'Phone Number',
+                        border: UnderlineInputBorder(),
+                      ),
+                      validator: (value) => value!.isEmpty
+                          ? 'Please enter your phone number'
+                          : null,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: 300,
+                    child: TextFormField(
+                      controller: emailController,
+                      decoration: const InputDecoration(
+                        hintText: "Enter Your Username",
+                        labelText: 'Email',
+                        border: UnderlineInputBorder(),
+                      ),
+                      validator: (value) =>
+                          value!.isEmpty ? 'Please enter your email' : null,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: 300,
+                    child: TextFormField(
+                      controller: passwordController,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        hintText: "Enter Your Password",
+                        labelText: 'Password',
+                        border: UnderlineInputBorder(),
+                      ),
+                      validator: (value) =>
+                          value!.isEmpty ? 'Please enter your password' : null,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () {
+                      String fullName = fullNameController.text;
+                      String phoneNumber = phoneNumberController.text;
+                      String email = emailController.text;
+                      String password = passwordController.text;
+                      authViewModel.register(
+                          fullName, phoneNumber, email, password);
+                      Navigator.of(context).pop(); // Kembali ke layar login
+                    },
+                    style: ElevatedButton.styleFrom(
+                      fixedSize: Size.fromWidth(300),
+                      primary: const Color(
+                          0xfff1c376), // Warna latar belakang tombol
+                      onPrimary: const Color(0xff606c5d), // Warna teks tombol
+                    ),
+                    child: const Text(
+                      'Daftar',
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // Kembali ke layar login
+                    },
+                    child: const Text(
+                      'Batal',
+                      style: TextStyle(
+                          color: Color(0xff606c5d)), // Warna teks tombol
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
