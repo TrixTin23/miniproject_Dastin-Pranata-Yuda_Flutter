@@ -12,8 +12,9 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _newPasswordController = TextEditingController();
-  String _newUsername = '';
-  String _newPassword = '';
+  TextEditingController _newFullNameController = TextEditingController();
+  TextEditingController _newPhoneNumberController = TextEditingController();
+  TextEditingController _newUserEmailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,24 +32,32 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               TextFormField(
-                decoration: InputDecoration(labelText: 'New Username'),
-                onSaved: (value) {
-                  _newUsername = value!;
-                },
+                controller: _newFullNameController,
+                decoration: InputDecoration(labelText: 'New Full Name'),
+              ),
+              TextFormField(
+                controller: _newPhoneNumberController,
+                decoration: InputDecoration(labelText: 'New Phone Number'),
+              ),
+              TextFormField(
+                controller: _newUserEmailController,
+                decoration: InputDecoration(labelText: 'New Email'),
               ),
               TextFormField(
                 controller: _newPasswordController,
                 decoration: InputDecoration(labelText: 'New Password'),
                 obscureText: true,
-                onSaved: (value) {
-                  _newPassword = value!;
-                },
               ),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
-                    authViewModel.editProfile(_newUsername, _newPassword);
+                    authViewModel.editProfile(
+                      _newFullNameController.text,
+                      _newUserEmailController.text,
+                      _newPhoneNumberController.text,
+                      _newPasswordController.text,
+                    );
                     Navigator.pop(context); // Kembali ke halaman profil
                   }
                 },
@@ -60,23 +69,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: Text('Hapus Akun'),
-                        content:
-                            Text('Apakah Anda yakin ingin menghapus akun?'),
+                        title: Text('Delete Account'),
+                        content: Text(
+                            'Are you sure you want to delete your account?'),
                         actions: <Widget>[
                           TextButton(
-                            child: Text('Batal'),
+                            child: Text('Cancel'),
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
                           ),
                           TextButton(
-                            child: Text('Hapus'),
+                            child: Text('Delete'),
                             onPressed: () {
                               authViewModel.deleteAccount();
                               Navigator.of(context).pop();
-                              // Kembali ke halaman login atau halaman awal aplikasi
-                              // Misalnya:
+                              // Navigate to the login screen or the app's home screen
+                              // For example:
                               Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
@@ -90,7 +99,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     },
                   );
                 },
-                child: Text('Hapus Akun'),
+                child: Text('Delete Account'),
               ),
             ],
           ),

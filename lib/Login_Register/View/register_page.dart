@@ -10,7 +10,9 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
 
-    TextEditingController usernameController = TextEditingController();
+    TextEditingController emailController = TextEditingController();
+    TextEditingController fullNameController = TextEditingController();
+    TextEditingController phoneNumberController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
 
     return Scaffold(
@@ -25,7 +27,7 @@ class RegisterScreen extends StatelessWidget {
                   // Wrap this Center around the Image
                   child: Image.asset(
                     "assets/images/Hungry-hub.png",
-                    height: 350,
+                    height: 300,
                     width: 350,
                   ),
                 ),
@@ -36,19 +38,43 @@ class RegisterScreen extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: Color(0xff606c5d)), // Warna teks
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 SizedBox(
                   width: 300,
                   child: TextField(
-                    controller: usernameController,
+                    controller: fullNameController,
                     decoration: const InputDecoration(
-                      hintText: "Enter Your Username",
-                      labelText: 'Username',
+                      hintText: "Enter Your full name",
+                      labelText: 'Full name',
                       border: UnderlineInputBorder(),
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: 300,
+                  child: TextField(
+                    controller: phoneNumberController,
+                    decoration: const InputDecoration(
+                      hintText: "Enter Your Phone Number",
+                      labelText: 'Phone Number',
+                      border: UnderlineInputBorder(),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: 300,
+                  child: TextField(
+                    controller: emailController,
+                    decoration: const InputDecoration(
+                      hintText: "Enter Your Username",
+                      labelText: 'Email',
+                      border: UnderlineInputBorder(),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
                 SizedBox(
                   width: 300,
                   child: TextField(
@@ -64,9 +90,12 @@ class RegisterScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    String username = usernameController.text;
+                    String fullName = fullNameController.text;
+                    String phoneNumber = phoneNumberController.text;
+                    String email = emailController.text;
                     String password = passwordController.text;
-                    authViewModel.register(username, password);
+                    authViewModel.register(
+                        fullName, phoneNumber, email, password);
                     Navigator.of(context).pop(); // Kembali ke layar login
                   },
                   style: ElevatedButton.styleFrom(

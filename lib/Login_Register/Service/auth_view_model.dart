@@ -13,40 +13,43 @@ class AuthViewModel with ChangeNotifier {
     checkAuthentication();
   }
 
-  Future<void> login(String username, String password) async {
+  Future<void> login(String email, String password) async {
     // Mencari pengguna dengan username dan password yang sesuai
     final user = registeredUsers.firstWhere(
-        (user) => user.username == username && user.password == password,
-        orElse: () => ModelUser(username: '', password: ''));
+        (user) => user.email == email && user.password == password,
+      orElse: () => ModelUser(fullName: '', phoneNumber: '', email: '', password: ''),
+);
 
-    if (user.username.isNotEmpty) {
+    if (user.fullName.isNotEmpty) {
       isAuthenticated = true;
       currentUser = user;
       notifyListeners();
     }
   }
 
-  Future<void> register(String username, String password) async {
+  Future<void> register(String fullName, String phoneNumber, String email, String password) async {
     final prefs = await SharedPreferences.getInstance();
-    final isUserAlreadyRegistered =
-        registeredUsers.any((user) => user.username == username);
 
-    // Pemeriksaan apakah pengguna sudah terdaftar sebelumnya
+    // Check if the user is already registered
+    final isUserAlreadyRegistered = registeredUsers.any((user) => user.email == email);
+
     if (isUserAlreadyRegistered) {
-      // Tampilkan pesan atau dialog bahwa pengguna sudah terdaftar
-      SnackBar(content: Text("data sudah terdaftar"));
+      // Show a message or dialog indicating that the user is already registered
+      SnackBar(content: Text("User already registered"));
     } else {
-      // Tambahkan pengguna baru ke daftar pengguna terdaftar jika belum terdaftar
-      registeredUsers.add(ModelUser(username: username, password: password));
+      // Add the new user to the list of registered users if not registered
+      registeredUsers.add(ModelUser(fullName: fullName, phoneNumber: phoneNumber, email: email, password: password));
 
-      // Simpan daftar pengguna terdaftar ke SharedPreferences
+      // Save the list of registered users to SharedPreferences
       await prefs.setStringList(
-          'registeredUsers',
-          registeredUsers
-              .map((user) => '${user.username}:${user.password}')
-              .toList());
+        'registeredUsers',
+        registeredUsers
+            .map((user) => '${user.fullName}:${user.phoneNumber}:${user.email}:${user.password}')
+            .toList(),
+      );
     }
   }
+
 
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
@@ -56,27 +59,27 @@ class AuthViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> editProfile(String username, String newPassword) async {
+  Future<void> editProfile(String fullName, String newEmail, String newPassword, String phoneNumber) async {
     final prefs = await SharedPreferences.getInstance();
 
     if (isAuthenticated && currentUser != null) {
-      // Cari user yang sedang login dalam daftar registeredUsers
-      final userIndex = registeredUsers.indexWhere((user) => user.username == currentUser!.username);
+      // Find the index of the currently logged-in user in the list of registered users
+      final userIndex = registeredUsers.indexWhere((user) => user.email == currentUser!.email);
 
       if (userIndex != -1) {
-        // Update password user yang sedang login
-        registeredUsers[userIndex] = ModelUser(username: username, password: newPassword);
+        // Update the email and password of the currently logged-in user
+        registeredUsers[userIndex] = ModelUser(fullName: fullName, phoneNumber: phoneNumber, email: newEmail, password: newPassword);
 
-        // Simpan perubahan ke SharedPreferences
+        // Save the changes to SharedPreferences
         await prefs.setStringList(
           'registeredUsers',
           registeredUsers
-              .map((user) => '${user.username}:${user.password}')
+              .map((user) => '${user.fullName}:${user.phoneNumber}:${user.email}:${user.password}')
               .toList(),
         );
 
-        // Update currentUser dengan data baru
-        currentUser = ModelUser(username: username, password: newPassword);
+        // Update currentUser with the new data
+        currentUser = ModelUser(fullName: fullName, phoneNumber: phoneNumber, email: newEmail, password: newPassword);
       }
     }
 
@@ -84,56 +87,56 @@ class AuthViewModel with ChangeNotifier {
   }
 
   Future<void> deleteAccount() async {
-  if (isAuthenticated && currentUser != null) {
-    final prefs = await SharedPreferences.getInstance();
+    if (isAuthenticated && currentUser != null) {
+      final prefs = await SharedPreferences.getInstance();
 
-    // Hapus pengguna yang sedang login dari daftar registeredUsers
-    registeredUsers.removeWhere((user) => user.username == currentUser!.username);
+      // Remove the currently logged-in user from the list of registered users
+      registeredUsers.removeWhere((user) => user.email == currentUser!.email);
 
-    // Simpan daftar pengguna terdaftar yang telah diperbarui ke SharedPreferences
-    await prefs.setStringList(
-      'registeredUsers',
-      registeredUsers
-          .map((user) => '${user.username}:${user.password}')
-          .toList(),
-    );
+      // Save the updated list of registered users to SharedPreferences
+      await prefs.setStringList(
+        'registeredUsers',
+        registeredUsers
+            .map((user) => '${user.fullName}:${user.phoneNumber}:${user.email}:${user.password}')
+            .toList(),
+      );
 
-    // Hapus informasi autentikasi
-    await prefs.remove('isAuthenticated');
-    await prefs.remove('lastLoggedInUser');
+      // Remove authentication information
+      await prefs.remove('isAuthenticated');
+      await prefs.remove('lastLoggedInUser');
 
-    // Reset status autentikasi dan currentUser
-    isAuthenticated = false;
-    currentUser = null;
+      // Reset authentication status and currentUser
+      isAuthenticated = false;
+      currentUser = null;
 
-    notifyListeners();
+      notifyListeners();
+    }
   }
-}
 
   Future<void> checkAuthentication() async {
     final prefs = await SharedPreferences.getInstance();
     final isUserAuthenticated = prefs.getBool('isAuthenticated') ?? false;
 
     if (isUserAuthenticated) {
-      // Jika pengguna sudah terotentikasi, set isAuthenticated menjadi true
       isAuthenticated = true;
 
-      // Ambil daftar pengguna terdaftar dari SharedPreferences
+      // Get the list of registered users from SharedPreferences
       final registeredUsersData = prefs.getStringList('registeredUsers') ?? [];
 
-      // Konversi data pengguna ke objek ModelUser
+      // Convert user data to User objects
       registeredUsers = registeredUsersData.map((data) {
         final parts = data.split(':');
-        return ModelUser(username: parts[0], password: parts[1]);
+        return ModelUser(fullName: parts[0], phoneNumber: parts[1], email: parts[2], password: parts[3]);
       }).toList();
 
-      // Tampilkan pengguna yang terakhir masuk
+      // Show the last logged-in user
       final lastLoggedInUser = prefs.getString('lastLoggedInUser');
       if (lastLoggedInUser != null) {
         final user = registeredUsers.firstWhere(
-            (user) => user.username == lastLoggedInUser,
-            orElse: () => ModelUser(username: '', password: ''));
-        if (user.username.isNotEmpty) {
+          (user) => user.email == lastLoggedInUser,
+          orElse: () => ModelUser(fullName: '', phoneNumber: '', email: '', password: ''),
+        );
+        if (user.fullName.isNotEmpty) {
           currentUser = user;
         }
       }
@@ -141,3 +144,4 @@ class AuthViewModel with ChangeNotifier {
     notifyListeners();
   }
 }
+
