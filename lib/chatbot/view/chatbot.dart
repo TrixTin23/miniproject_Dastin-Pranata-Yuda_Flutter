@@ -14,6 +14,28 @@ class _ChatbotState extends State<Chatbot> {
   final APIService apiService = APIService();
   final List<Map<String, dynamic>> _messages = [];
 
+  void sendMessage(String message) {
+    // Add user message to the list
+    _messages.add({
+      'content': message,
+      'role': 'user',
+    });
+    setState(() {});
+
+    // Get AI response
+    apiService.getAIResponse(message).then((response) {
+      // Add system message with AI response to the list
+      _messages.add({
+        'content': response,
+        'role': 'system',
+      });
+      setState(() {});
+    }).catchError((error) {
+      // Handle error here
+      print('Error: $error');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,21 +66,10 @@ class _ChatbotState extends State<Chatbot> {
                 suffixIcon: Padding(
                   padding: const EdgeInsets.only(right: 8.0),
                   child: IconButton(
-                    onPressed: () async {
+                    onPressed: () {
                       final message = _controller.text;
                       _controller.clear();
-
-                      final response = await apiService.getAIResponse(message);
-                      setState(() {
-                        _messages.add({
-                          'content': message,
-                          'role': 'user',
-                        });
-                        _messages.add({
-                          'content': response,
-                          'role': 'system',
-                        });
-                      });
+                      sendMessage(message); // Send message and get response
                     },
                     icon: const Icon(Icons.send),
                   ),
@@ -66,26 +77,6 @@ class _ChatbotState extends State<Chatbot> {
               ),
             ),
           ),
-
-          // ElevatedButton(
-          //   onPressed: () async {
-          //     final message = _controller.text;
-          //     _controller.clear();
-
-          //     final response = await apiService.getAIResponse(message);
-          //     setState(() {
-          //       _messages.add({
-          //         'content': message,
-          //         'role': 'user',
-          //       });
-          //       _messages.add({
-          //         'content': response,
-          //         'role': 'system',
-          //       });
-          //     });
-          //   },
-          //   child: const Text('Send'),
-          // ),
         ],
       ),
     );

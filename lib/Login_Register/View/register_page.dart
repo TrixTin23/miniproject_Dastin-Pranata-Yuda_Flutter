@@ -11,7 +11,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final _formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         labelText: 'Full name',
                         border: UnderlineInputBorder(),
                       ),
-                      validator: (value) => 
+                      validator: (value) =>
                           value!.isEmpty ? 'Please enter your full name' : null,
                     ),
                   ),
@@ -108,13 +108,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      String fullName = fullNameController.text;
-                      String phoneNumber = phoneNumberController.text;
-                      String email = emailController.text;
-                      String password = passwordController.text;
-                      authViewModel.register(
-                          fullName, phoneNumber, email, password);
-                      Navigator.of(context).pop(); // Kembali ke layar login
+                      if (_formKey.currentState!.validate()) {
+                        String fullName = fullNameController.text;
+                        String phoneNumber = phoneNumberController.text;
+                        String email = emailController.text;
+                        String password = passwordController.text;
+                        authViewModel.register(
+                            fullName, phoneNumber, email, password);
+                        Navigator.pop(context); // Kembali ke layar login
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       fixedSize: Size.fromWidth(300),

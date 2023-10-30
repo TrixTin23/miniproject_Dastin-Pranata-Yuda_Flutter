@@ -30,7 +30,7 @@ class AuthViewModel with ChangeNotifier {
   Future<void> register(String fullName, String phoneNumber, String email, String password) async {
     final prefs = await SharedPreferences.getInstance();
 
-    // Check if the user is already registered
+    // cek apakah user sudah terdaftar
     final isUserAlreadyRegistered = registeredUsers.any((user) => user.email == email);
 
     if (isUserAlreadyRegistered) {
